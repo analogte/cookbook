@@ -53,7 +53,7 @@ export default async function HomePage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="min-w-[200px] border-cream/30 text-cream hover:bg-cream/10"
+                className="min-w-[200px] border-gold text-gold hover:bg-gold hover:text-charcoal"
               >
                 ดูหมวดหมู่ทั้งหมด
               </Button>
@@ -134,7 +134,7 @@ export default async function HomePage() {
           {categories.length > 6 && (
             <div className="mt-10 text-center">
               <Link href="/categories">
-                <Button variant="outline">
+                <Button className="bg-charcoal text-cream hover:bg-charcoal-700">
                   ดูหมวดหมู่ทั้งหมด
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
