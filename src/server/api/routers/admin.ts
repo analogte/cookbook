@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 import { db } from "../../db";
 import {
   categories,
@@ -80,12 +80,12 @@ const tagSchema = z.object({
 export const adminRouter = router({
   // Categories CRUD
   categories: router({
-    create: publicProcedure.input(categorySchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(categorySchema).mutation(async ({ input }) => {
       const result = await db.insert(categories).values(input).returning();
       return result[0];
     }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: categorySchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -96,7 +96,7 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(categories).where(eq(categories.id, input.id));
@@ -106,12 +106,12 @@ export const adminRouter = router({
 
   // Recipes CRUD
   recipes: router({
-    create: publicProcedure.input(recipeSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(recipeSchema).mutation(async ({ input }) => {
       const result = await db.insert(recipes).values(input).returning();
       return result[0];
     }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: recipeSchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -122,14 +122,14 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(recipes).where(eq(recipes.id, input.id));
         return { success: true };
       }),
 
-    setTags: publicProcedure
+    setTags: protectedProcedure
       .input(z.object({ recipeId: z.number(), tagIds: z.array(z.number()) }))
       .mutation(async ({ input }) => {
         // Delete existing tags
@@ -150,12 +150,12 @@ export const adminRouter = router({
 
   // Ingredients CRUD
   ingredients: router({
-    create: publicProcedure.input(ingredientSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(ingredientSchema).mutation(async ({ input }) => {
       const result = await db.insert(ingredients).values(input).returning();
       return result[0];
     }),
 
-    createMany: publicProcedure
+    createMany: protectedProcedure
       .input(z.array(ingredientSchema))
       .mutation(async ({ input }) => {
         if (input.length === 0) return [];
@@ -163,7 +163,7 @@ export const adminRouter = router({
         return result;
       }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: ingredientSchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -174,14 +174,14 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(ingredients).where(eq(ingredients.id, input.id));
         return { success: true };
       }),
 
-    deleteByRecipe: publicProcedure
+    deleteByRecipe: protectedProcedure
       .input(z.object({ recipeId: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(ingredients).where(eq(ingredients.recipeId, input.recipeId));
@@ -191,12 +191,12 @@ export const adminRouter = router({
 
   // Steps CRUD
   steps: router({
-    create: publicProcedure.input(stepSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(stepSchema).mutation(async ({ input }) => {
       const result = await db.insert(steps).values(input).returning();
       return result[0];
     }),
 
-    createMany: publicProcedure
+    createMany: protectedProcedure
       .input(z.array(stepSchema))
       .mutation(async ({ input }) => {
         if (input.length === 0) return [];
@@ -204,7 +204,7 @@ export const adminRouter = router({
         return result;
       }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: stepSchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -215,14 +215,14 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(steps).where(eq(steps.id, input.id));
         return { success: true };
       }),
 
-    deleteByRecipe: publicProcedure
+    deleteByRecipe: protectedProcedure
       .input(z.object({ recipeId: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(steps).where(eq(steps.recipeId, input.recipeId));
@@ -232,12 +232,12 @@ export const adminRouter = router({
 
   // Tags CRUD
   tags: router({
-    create: publicProcedure.input(tagSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(tagSchema).mutation(async ({ input }) => {
       const result = await db.insert(tags).values(input).returning();
       return result[0];
     }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: tagSchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -248,7 +248,7 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(tags).where(eq(tags.id, input.id));
@@ -258,12 +258,12 @@ export const adminRouter = router({
 
   // Articles CRUD
   articles: router({
-    create: publicProcedure.input(articleSchema).mutation(async ({ input }) => {
+    create: protectedProcedure.input(articleSchema).mutation(async ({ input }) => {
       const result = await db.insert(articles).values(input).returning();
       return result[0];
     }),
 
-    update: publicProcedure
+    update: protectedProcedure
       .input(z.object({ id: z.number(), data: articleSchema.partial() }))
       .mutation(async ({ input }) => {
         const result = await db
@@ -274,7 +274,7 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(articles).where(eq(articles.id, input.id));
@@ -284,7 +284,7 @@ export const adminRouter = router({
 
   // Recipe Images CRUD
   recipeImages: router({
-    create: publicProcedure
+    create: protectedProcedure
       .input(
         z.object({
           recipeId: z.number(),
@@ -298,7 +298,7 @@ export const adminRouter = router({
         return result[0];
       }),
 
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.delete(recipeImages).where(eq(recipeImages.id, input.id));
