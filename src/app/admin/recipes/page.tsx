@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/image-upload";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminRecipesPage() {
@@ -231,14 +232,13 @@ export default function AdminRecipesPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium">
-                  URL รูปภาพ
+                  รูปภาพ
                 </label>
-                <Input
+                <ImageUpload
                   value={formData.imageUrl}
-                  onChange={(e) =>
-                    setFormData({ ...formData, imageUrl: e.target.value })
+                  onChange={(url) =>
+                    setFormData({ ...formData, imageUrl: url })
                   }
-                  placeholder="https://..."
                 />
               </div>
 
@@ -336,8 +336,8 @@ export default function AdminRecipesPage() {
                   {createMutation.isPending || updateMutation.isPending
                     ? "กำลังบันทึก..."
                     : editingId
-                    ? "อัปเดต"
-                    : "สร้าง"}
+                      ? "อัปเดต"
+                      : "สร้าง"}
                 </Button>
                 <Button
                   type="button"
@@ -410,16 +410,16 @@ export default function AdminRecipesPage() {
                             recipe.difficulty === "easy"
                               ? "gold"
                               : recipe.difficulty === "medium"
-                              ? "secondary"
-                              : "burgundy"
+                                ? "secondary"
+                                : "burgundy"
                           }
                           className="text-xs"
                         >
                           {recipe.difficulty === "easy"
                             ? "ง่าย"
                             : recipe.difficulty === "medium"
-                            ? "ปานกลาง"
-                            : "ยาก"}
+                              ? "ปานกลาง"
+                              : "ยาก"}
                         </Badge>
                       </div>
                     </div>

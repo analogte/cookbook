@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Plus, Pencil, Trash2, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/image-upload";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminCategoriesPage() {
@@ -163,16 +162,15 @@ export default function AdminCategoriesPage() {
                     placeholder="🍽️"
                   />
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label className="mb-1 block text-sm font-medium">
-                    URL รูปภาพ
+                    รูปภาพ
                   </label>
-                  <Input
+                  <ImageUpload
                     value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
+                    onChange={(url) =>
+                      setFormData({ ...formData, imageUrl: url })
                     }
-                    placeholder="https://..."
                   />
                 </div>
               </div>
@@ -185,8 +183,8 @@ export default function AdminCategoriesPage() {
                   {createMutation.isPending || updateMutation.isPending
                     ? "กำลังบันทึก..."
                     : editingId
-                    ? "อัปเดต"
-                    : "สร้าง"}
+                      ? "อัปเดต"
+                      : "สร้าง"}
                 </Button>
                 <Button
                   type="button"
