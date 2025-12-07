@@ -1,5 +1,8 @@
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
+import { readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import {
   categories,
   recipes,
@@ -10,6 +13,17 @@ import {
   articles,
   recipeImages,
 } from "./schema";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load seed data from JSON files
+const categoryData = JSON.parse(
+  readFileSync(join(__dirname, "seed-data/categories.json"), "utf-8")
+);
+const tagData = JSON.parse(
+  readFileSync(join(__dirname, "seed-data/tags.json"), "utf-8")
+);
 
 const sqlite = new Database("./sqlite.db");
 const db = drizzle(sqlite);
@@ -28,89 +42,13 @@ async function seed() {
   db.delete(tags).run();
   db.delete(categories).run();
 
-  // Create categories
+  // Create categories (loaded from JSON)
   console.log("Creating categories...");
-  const categoryData = [
-    {
-      name: "อาหารไทย",
-      slug: "thai-cuisine",
-      description:
-        "สูตรอาหารไทยแท้ๆ รสชาติดั้งเดิม จากตำรับโบราณสู่ครัวยุคใหม่",
-      icon: "🍜",
-      imageUrl:
-        "https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=800&q=80",
-      sortOrder: 1,
-    },
-    {
-      name: "อาหารตะวันตก",
-      slug: "western-cuisine",
-      description:
-        "อาหารสไตล์ตะวันตก สเต็ก พาสต้า และเมนูจากทั่วยุโรป",
-      icon: "🥩",
-      imageUrl:
-        "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
-      sortOrder: 2,
-    },
-    {
-      name: "อาหารญี่ปุ่น",
-      slug: "japanese-cuisine",
-      description:
-        "อาหารญี่ปุ่นแท้ๆ ซูชิ ราเมน และเมนูจากแดนอาทิตย์อุทัย",
-      icon: "🍣",
-      imageUrl:
-        "https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=800&q=80",
-      sortOrder: 3,
-    },
-    {
-      name: "ขนมหวาน",
-      slug: "desserts",
-      description:
-        "ของหวานและขนมหลากหลายรูปแบบ ทั้งไทยและเทศ",
-      icon: "🍰",
-      imageUrl:
-        "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80",
-      sortOrder: 4,
-    },
-    {
-      name: "เครื่องดื่ม",
-      slug: "beverages",
-      description:
-        "เครื่องดื่มสดชื่น ค็อกเทล กาแฟ และชาพิเศษ",
-      icon: "🍹",
-      imageUrl:
-        "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800&q=80",
-      sortOrder: 5,
-    },
-    {
-      name: "อาหารสุขภาพ",
-      slug: "healthy-food",
-      description:
-        "อาหารเพื่อสุขภาพ โลว์แคลอรี่ อาหารคลีน",
-      icon: "🥗",
-      imageUrl:
-        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
-      sortOrder: 6,
-    },
-  ];
-
   const insertedCategories = db.insert(categories).values(categoryData).returning().all();
   console.log(`Created ${insertedCategories.length} categories`);
 
-  // Create tags
+  // Create tags (loaded from JSON)
   console.log("Creating tags...");
-  const tagData = [
-    { name: "มังสวิรัติ", slug: "vegetarian", color: "#4CAF50" },
-    { name: "ทำง่าย", slug: "quick", color: "#FF9800" },
-    { name: "ปราศจากกลูเตน", slug: "gluten-free", color: "#9C27B0" },
-    { name: "ของหวาน", slug: "sweet", color: "#E91E63" },
-    { name: "เผ็ด", slug: "spicy", color: "#F44336" },
-    { name: "คลีน", slug: "clean", color: "#00BCD4" },
-    { name: "คีโต", slug: "keto", color: "#795548" },
-    { name: "โปรตีนสูง", slug: "high-protein", color: "#3F51B5" },
-    { name: "สำหรับเด็ก", slug: "kid-friendly", color: "#FFEB3B" },
-    { name: "อาหารจานเดียว", slug: "one-dish", color: "#607D8B" },
-  ];
-
   const insertedTags = db.insert(tags).values(tagData).returning().all();
   console.log(`Created ${insertedTags.length} tags`);
 

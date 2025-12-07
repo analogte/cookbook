@@ -1,28 +1,25 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-// Verify token validity
-function verifyToken(token: string): boolean {
-    try {
-        const payload = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-        // Check if token is expired
-        if (payload.exp && payload.exp < Date.now()) {
-            return false;
-        }
-        return true;
-    } catch {
-        return false;
-    }
-}
+import { isValidToken } from "@/lib/auth";
 
 export async function GET() {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get("admin_session")?.value;
 
-        if (!token || !verifyToken(token)) {
+        if (!token) {
             return NextResponse.json(
                 { error: "Not authenticated" },
+                { status: 401 }
+            );
+        }
+
+        // Verify JWT token
+        const isValid = await isValidToken(token);
+
+        if (!isValid) {
+            return NextResponse.json(
+                { error: "Invalid or expired token" },
                 { status: 401 }
             );
         }

@@ -1,0 +1,52 @@
+[
+    {
+        "name": "มังสวิรัติ",
+        "slug": "vegetarian",
+        "color": "#4CAF50"
+    },
+    {
+        "name": "ทำง่าย",
+        "slug": "quick",
+        "color": "#FF9800"
+    },
+    {
+        "name": "ปราศจากกลูเตน",
+        "slug": "gluten-free",
+        "color": "#9C27B0"
+    },
+    {
+        "name": "ของหวาน",
+        "slug": "sweet",
+        "color": "#E91E63"
+    },
+    {
+        "name": "เผ็ด",
+        "slug": "spicy",
+        "color": "#F44336"
+    },
+    {
+        "name": "คลีน",
+        "slug": "clean",
+        "color": "#00BCD4"
+    },
+    {
+        "name": "คีโต",
+        "slug": "keto",
+        "color": "#795548"
+    },
+    {
+        "name": "โปรตีนสูง",
+        "slug": "high-protein",
+        "color": "#3F51B5"
+    },
+    {
+        "name": "สำหรับเด็ก",
+        "slug": "kid-friendly",
+        "color": "#FFEB3B"
+    },
+    {
+        "name": "อาหารจานเดียว",
+        "slug": "one-dish",
+        "color": "#607D8B"
+    }
+]

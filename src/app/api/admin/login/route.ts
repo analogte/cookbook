@@ -1,18 +1,10 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { generateToken } from "@/lib/auth";
 
 // Admin credentials from environment
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
-
-// Simple token generation (in production, use a proper JWT library)
-function generateToken(username: string): string {
-    const payload = {
-        username,
-        exp: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
-    };
-    return Buffer.from(JSON.stringify(payload)).toString("base64");
-}
 
 export async function POST(request: NextRequest) {
     try {
@@ -27,8 +19,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Generate token
-        const token = generateToken(username);
+        // Generate JWT token
+        const token = await generateToken(username);
 
         // Set cookie
         const cookieStore = await cookies();
