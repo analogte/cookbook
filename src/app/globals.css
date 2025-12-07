@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 30% 96%;
+    --foreground: 0 0% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 17%;
+
+    --primary: 35 51% 65%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 17%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 46%;
+
+    --accent: 350 57% 35%;
+    --accent-foreground: 45 30% 96%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 35 51% 65%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 45 30% 96%;
+
+    --card: 0 0% 15%;
+    --card-foreground: 45 30% 96%;
+
+    --popover: 0 0% 15%;
+    --popover-foreground: 45 30% 96%;
+
+    --primary: 35 51% 65%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 45 30% 96%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 64%;
+
+    --accent: 350 57% 35%;
+    --accent-foreground: 45 30% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 35 51% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-charcoal-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-charcoal-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-charcoal-400;
+  }
+}
+
+@layer utilities {
+  /* Text gradient */
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-600 via-gold to-gold-600 bg-clip-text text-transparent;
+  }
+
+  /* Decorative line */
+  .line-gold {
+    @apply relative;
+  }
+
+  .line-gold::after {
+    content: "";
+    @apply absolute left-0 bottom-0 w-12 h-0.5 bg-gold;
+  }
+
+  /* Elegant divider */
+  .divider-elegant {
+    @apply relative flex items-center justify-center;
+  }
+
+  .divider-elegant::before,
+  .divider-elegant::after {
+    content: "";
+    @apply flex-1 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent;
+  }
+
+  .divider-elegant::before {
+    @apply mr-4;
+  }
+
+  .divider-elegant::after {
+    @apply ml-4;
+  }
+}
+
+/* Print styles for recipes */
+@media print {
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+
+  header,
+  footer,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  .recipe-print {
+    page-break-inside: avoid;
+  }
+
+  .recipe-print h1 {
+    font-size: 24pt;
+    margin-bottom: 12pt;
+  }
+
+  .recipe-print h2 {
+    font-size: 18pt;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+    border-bottom: 1pt solid #ccc;
+    padding-bottom: 4pt;
+  }
+
+  .recipe-print ul,
+  .recipe-print ol {
+    margin-left: 20pt;
+  }
+
+  .recipe-print li {
+    margin-bottom: 6pt;
+  }
+
+  .recipe-print img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Animation classes */
+@layer utilities {
+  .animate-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.5s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
