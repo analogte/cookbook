@@ -1,15 +1,17 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   FolderOpen,
   ChefHat,
   Tags,
   FileText,
-  Settings,
   ArrowLeft,
+  LogOut,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +29,61 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  // Check authentication on mount
+  useEffect(() => {
+    // Skip auth check for login page
+    if (pathname === "/admin/login") {
+      setIsAuthenticated(true);
+      return;
+    }
+
+    // Check if cookie exists (client-side check)
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/admin/check", { method: "GET" });
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          router.push("/admin/login");
+        }
+      } catch {
+        router.push("/admin/login");
+      }
+    };
+
+    checkAuth();
+  }, [pathname, router]);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+      router.push("/admin/login");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  // Show nothing while checking auth (prevents flash of content)
+  if (isAuthenticated === null && pathname !== "/admin/login") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-charcoal-50">
+        <Loader2 className="h-8 w-8 animate-spin text-gold" />
+      </div>
+    );
+  }
+
+  // For login page, render without sidebar
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   return (
     <div className="min-h-screen bg-charcoal-50">
@@ -67,8 +124,8 @@ export default function AdminLayout({
           })}
         </nav>
 
-        {/* Back to site */}
-        <div className="border-t border-charcoal-700 p-3">
+        {/* Bottom links */}
+        <div className="border-t border-charcoal-700 p-3 space-y-1">
           <Link
             href="/"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-charcoal-300 transition-colors hover:bg-charcoal-700 hover:text-cream"
@@ -76,6 +133,18 @@ export default function AdminLayout({
             <ArrowLeft className="h-5 w-5" />
             กลับไปหน้าเว็บไซต์
           </Link>
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+          >
+            {isLoggingOut ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <LogOut className="h-5 w-5" />
+            )}
+            ออกจากระบบ
+          </button>
         </div>
       </aside>
 
