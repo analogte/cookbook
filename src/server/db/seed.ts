@@ -1141,7 +1141,7 @@ async function seed() {
           { name: "อะซาอิผง", amount: 2, unit: "ช้อนโต๊ะ", groupName: "สมูทตี้" },
           { name: "กล้วยหอมแช่แข็ง", amount: 1, unit: "ลูก", groupName: "สมูทตี้" },
           { name: "เบอร์รี่รวมแช่แข็ง", amount: 100, unit: "กรัม", groupName: "สมูทตี้" },
-          { name: "นมอัลมอนด์", amount: 100, unit: "มล.", groupName": "สมูทตี้" },
+          { name: "นมอัลมอนด์", amount: 100, unit: "มล.", groupName: "สมูทตี้" },
           { name: "กล้วยหอมสด", amount: 0.5, unit: "ลูก", groupName: "ท็อปปิ้ง" },
           { name: "กราโนล่า", amount: 30, unit: "กรัม", groupName: "ท็อปปิ้ง" },
           { name: "เมล็ดเจีย", amount: 1, unit: "ช้อนโต๊ะ", groupName: "ท็อปปิ้ง" },
